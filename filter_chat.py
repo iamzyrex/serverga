@@ -47,14 +47,13 @@ def add_user_to_json(user_id):
                 f.seek(0)  # Fayl boshiga qaytish
                 json.dump(users, f)  # Yangilangan ro‘yxatni yozish
                 f.truncate()  # Keraksiz ma'lumotlarni o‘chirish
-                print(f"User ID {user_id} muvaffaqiyatli qo'shildi!")
             else:
-                print(f"User ID {user_id} allaqachon mavjud.")
+                pass
     except (FileNotFoundError, json.JSONDecodeError):
         # Agar fayl mavjud bo‘lmasa yoki buzilgan bo‘lsa, yangisini yaratish
         with open(FILENAME, "w") as f:
             json.dump([user_id], f)
-        print(f"User ID {user_id} yangi faylga qo'shildi!")
+        
 
 ban_user = json_to_set()
 count1 = len(ban_user)
@@ -65,10 +64,10 @@ keys = [
     'ЮРАМАН', 'ЮРАМИЗ', 'ЮРAМАН', 'ЮРAМИЗ', 'ЙУРАМАН', 'ЙУРАМИЗ', 'йураман', 'йурамиз', 
     'ЖЕНТРА', 'ЖЕНТРА', 'жентра', 'жентрa', 'КAМ', 'КАМ', 'Кобилт', 'Кобалт', 'КОБАЛЬТ', 
     'КОБЛТ', 'КОБОЛТ', 'Коблт', 'ҚОБАЛТ', 'қобалт', 'малуби', 'месяц', 'на', 'ОЛАМИЗ', 
-    'ОЛАМАН', 'ОЛАМАН', 'ОЛАМЗ', 'оламан', 'оламиз', 'оламз', 'ОЛАМИЗ', 'ОЛAМИЗ', 
+    'ОЛАМАН', 'ОЛАМАН', 'ОЛАМЗ', 'оламан', 'оламиз', 'оламз', 'ОЛАМИЗ', 'ОЛAМИЗ','USDT',
     'OLAMIZ', 'OLAMIZ', 'olamiz', 'olаmiz', 'Olamiz', 'Olamiz', 'Оламиз', 'опкетамиз', 
     'сotilad', 'sotiladi', 'sotilad', 'sotiladi', 'ТУХТАМИМИЗ', '𝗞𝗢𝗕𝗔𝗟𝗧', '✔️', '✅', 
-    '🚕', '🚖', '🚘', '🚫', '📊', '🔤', '☎️', '😎', '🇺🇿', 'хурматли'
+    '🚕', '🚖', '🚘', '🚫', '📊', '🔤', '☎️', '😎', '🇺🇿', 'хурматли','olamz','💋'
 ]
 
 keys = [i.lower() for i in keys]
@@ -96,16 +95,18 @@ async def forward_message(event):
 
     else:
         if user_id not in ban_user:
-            formatted_text = (
-            f"🆔 <b>ID:</b> <a href='tg://openmessage?user_id={user_id}'>{user_id}</a>\n\n\n"
-            f"📝 <b>Matn:\n</b> {text}\n \n \n"
-            # f"📝 <b>Matn:</b>\n<blockquote>{text}</blockquote>\n"
-            f'\u200B'
+            if len(text) >10 :
 
-)
-            await bot.send_message(BOT_USERNAME,formatted_text,buttons=[[Button.url('Profilni o\'tish',url=f'tg://openmessage?user_id={user_id}')]],parse_mode='HTML')      
+                formatted_text = (
+                f"🆔 <b>ID:</b> <a href='tg://openmessage?user_id={user_id}'>{user_id}</a>\n"
+                f"🆔 <b>iOS ID :</b> <a href='https://t.me/@id{user_id}'>{user_id}</a>\n"
+                f"📝 <b>Matn:\n</b> {text}\n \n"
 
-@bot.on(events.NewMessage(pattern=r"^/(add_group|add_word|add_admin)"))
+
+    )
+                await bot.send_message(BOT_USERNAME,formatted_text,buttons=[[Button.url('Profilni o\'tish',url=f'tg://openmessage?user_id={user_id}')]],parse_mode='HTML')      
+
+@bot.on(events.NewMessage(chats=admins_id,pattern=r"^/(add_group|add_word|add_admin)"))
 async def handle_commands(event):
     if event.sender_id in admins_id:    
         parts = event.message.text.split(" ", maxsplit=2)
@@ -119,7 +120,7 @@ async def handle_commands(event):
         if command == "/add_group":
             if arg1.startswith("-100"):
                 chat_id1.append(int(arg1))
-                print(chat_id1)
+                
                 await event.reply(f"✅ Guruh qo‘shildi: {arg1}")
             else:
                 await event.reply("❌ Guruh ID noto‘g‘ri!")
@@ -144,7 +145,7 @@ async def handle_commands(event):
 
 @client.on(events.NewMessage(chats=chat_id1))
 async def message_handler(event):
-    await asyncio.sleep(1)
+    await asyncio.sleep(5)
     await client.send_read_acknowledge(event.chat_id)
 
 try:
