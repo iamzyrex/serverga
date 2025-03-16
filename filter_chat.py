@@ -67,7 +67,8 @@ keys = [
     'ОЛАМАН', 'ОЛАМАН', 'ОЛАМЗ', 'оламан', 'оламиз', 'оламз', 'ОЛАМИЗ', 'ОЛAМИЗ','USDT',
     'OLAMIZ', 'OLAMIZ', 'olamiz', 'olаmiz', 'Olamiz', 'Olamiz', 'Оламиз', 'опкетамиз', 
     'сotilad', 'sotiladi', 'sotilad', 'sotiladi', 'ТУХТАМИМИЗ', '𝗞𝗢𝗕𝗔𝗟𝗧', '✔️', '✅', 
-    '🚕', '🚖', '🚘', '🚫', '📊', '🔤', '☎️', '😎', '🇺🇿', 'хурматли','olamz','💋'
+    '🚕', '🚖', '🚘', '🚫', '📊', '🔤', '☎️', '😎', '🇺🇿', 'хурматли','olamz','💋','Kredit',
+    'НЕХСИЯ','Windows'
 ]
 
 keys = [i.lower() for i in keys]
@@ -101,9 +102,12 @@ async def forward_message(event):
                 f"🆔 <b>ID:</b> <a href='tg://openmessage?user_id={user_id}'>{user_id}</a>\n"
                 f"🆔 <b>iOS ID :</b> <a href='https://t.me/@id{user_id}'>{user_id}</a>\n"
                 f"📝 <b>Matn:\n</b> {text}\n \n"
+                f"<b>Profilga o‘tish:</b> <a href='tg://openmessage?user_id={user_id}'> Bu yerga bosing</a>"
 
 
     )
+                buttons = [[Button.url("Profilga o'tish", f"tg://user?id={user_id}")]]
+    
                 await bot.send_message(BOT_USERNAME,formatted_text,buttons=[[Button.url('Profilni o\'tish',url=f'tg://openmessage?user_id={user_id}')]],parse_mode='HTML')      
 
 @bot.on(events.NewMessage(chats=admins_id,pattern=r"^/(add_group|add_word|add_admin)"))
@@ -153,3 +157,4 @@ try:
     client.run_until_disconnected()
 except KeyboardInterrupt:
     set_to_json(users=ban_user)
+
